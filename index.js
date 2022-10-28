@@ -14,9 +14,7 @@ app.options("*", cors());
 var port = process.env.PORT || 8080;
 
 // Send message for default URL
-app.get("/", (req, res) =>
-  res.send("Hello World from Flowey!! This is for CS3219 Task B  :D")
-);
+app.get("/", (req, res) => res.send("Welcome! This is for CS3219 Task B  :D"));
 
 app.use("/api/divelog", divelogApiRouter).all((_, res) => {
   res.setHeader("content-type", "application/json");
