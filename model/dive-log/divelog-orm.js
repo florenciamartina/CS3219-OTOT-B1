@@ -72,7 +72,6 @@ export async function ormUpdateDivelog(
       duration,
       comments,
     });
-    console.log("UpdatedLog: " + updatedLog);
 
     return updatedLog;
   } catch (err) {

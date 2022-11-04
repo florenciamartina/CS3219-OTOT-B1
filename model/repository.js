@@ -58,7 +58,6 @@ export async function updateDiveLog(updatedParams) {
     username: updatedParams.username,
     name: updatedParams.name,
   });
-  console.log(updatedParams);
   if (oldLog) {
     const updated = await DiveLogModel.updateOne(
       {
@@ -84,11 +83,6 @@ export async function updateDiveLog(updatedParams) {
 // DELETE FUNCTION
 export async function deleteDiveLog(username, name) {
   const log = await DiveLogModel.findOne({ username: username, name: name });
-  // const deletedLog = await DiveLogModel.findOneAndDelete({
-  //   username: username,
-  //   name: name,
-  // });
-  // return deletedLog.acknowledged;
   if (log) {
     const deleted = await DiveLogModel.deleteOne({ username, name: name });
     console.log(deleted);
