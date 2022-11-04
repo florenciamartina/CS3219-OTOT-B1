@@ -76,7 +76,15 @@ export async function createDivelog(req, res) {
 export async function getDiveLogByName(req, res) {
   try {
     const { username, name } = req.query;
-    // const username = req.username;
+
+    const isUser = await isUserExist(username);
+    console.log(isUser);
+    if (!isUser) {
+      return res
+        .status(404)
+        .json({ message: `User ${username} does not exist` });
+    }
+
     if (username && name) {
       const log = await _getDivelogByName(username, name);
       if (!log) {
@@ -99,7 +107,15 @@ export async function getDiveLogByName(req, res) {
 export async function getDiveLogByYear(req, res) {
   try {
     const { username, year } = req.query;
-    // const username = req.username;
+
+    const isUser = await isUserExist(username);
+    console.log(isUser);
+    if (!isUser) {
+      return res
+        .status(404)
+        .json({ message: `User ${username} does not exist` });
+    }
+
     if (username && year) {
       const log = await _getDivelogByYear(username, year);
       if (!log) {
@@ -126,16 +142,25 @@ export async function updateDivelog(req, res) {
   let comments = req.body.comments ? req.body.comments : "";
   try {
     const { username, name } = req.body;
-    // const username = req.username;
-    const isExist = await isUserExist(username);
-    if (!isExist) {
-      return res.status(404).json({ message: "User not found!" });
+
+    const isUser = await isUserExist(username);
+    console.log(isUser);
+    if (!isUser) {
+      return res
+        .status(404)
+        .json({ message: `User ${username} does not exist` });
     }
 
     if (name && username && (depth || duration || comments)) {
-      const updated = _updateDivelog(username, name, depth, duration, comments);
-      if (updated.err) {
-        return res.status(400).json({ message: "Wrong fields!" });
+      const updated = await _updateDivelog(
+        username,
+        name,
+        depth,
+        duration,
+        comments
+      );
+      if (!updated || updated.err) {
+        return res.status(400).json({ message: "Wrong divelog name!" });
       } else if (updated) {
         return res
           .status(200)
@@ -153,7 +178,15 @@ export async function updateDivelog(req, res) {
 export async function deleteDivelog(req, res) {
   try {
     const { username, name } = req.body;
-    // const username = req.username;
+
+    const isUser = await isUserExist(username);
+    console.log(isUser);
+    if (!isUser) {
+      return res
+        .status(404)
+        .json({ message: `User ${username} does not exist` });
+    }
+
     if (username && name) {
       const isDeleted = await _deleteDivelog(username, name);
       if (!isDeleted) {
